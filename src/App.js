@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import Layout from "./Layout";
+import Hero from "./Hero";
+import { Fragment } from "react";
+import MovieList from "./MovieList";
+import { Switch, Route } from "react-router-dom";
+import MovieDiscoveryPage from "./pages/MovieDiscoveryPage";
 
 function App() {
+  const API_KEY = "d76141fc516005c4b21c33a7c4f13e2f";
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <Switch>
+        <Route path="/" exact>
+          <Hero />
+        </Route>
+        <Route path="/discover" exact>
+          <MovieDiscoveryPage />
+        </Route>
+      </Switch>
+    </Layout>
   );
 }
 
