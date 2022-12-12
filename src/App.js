@@ -6,6 +6,7 @@ import { Fragment } from "react";
 import MovieList from "./MovieList";
 import { Switch, Route } from "react-router-dom";
 import MovieDiscoveryPage from "./pages/MovieDiscoveryPage";
+import MovieDetailsPage from "./pages/MovieDetailsPage";
 
 function App() {
   const API_KEY = "d76141fc516005c4b21c33a7c4f13e2f";
@@ -18,6 +19,9 @@ function App() {
         </Route>
         <Route path="/discover" exact>
           <MovieDiscoveryPage />
+        </Route>
+        <Route path="/:movieId" exact>
+          <MovieDetailsPage />
         </Route>
       </Switch>
     </Layout>

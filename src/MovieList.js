@@ -5,8 +5,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const MovieList = () => {
   const [movies, setMovies] = useState([[], [], []]);
 
-  const genreList = [53, 18, 28];
-  let movieArray = [];
+  const genreList = [53, 28, 18];
+  const genreNames = ["Thriller", "Action", "Drama"];
+  let movieArray;
 
   const fetchMoviesHandler = useCallback(async () => {
     movieArray = [];
@@ -19,7 +20,6 @@ const MovieList = () => {
       movieArray.push(data.results);
     }
     setMovies(movieArray);
-    console.log(movieArray);
   }, []);
 
   useEffect(() => {
@@ -28,63 +28,28 @@ const MovieList = () => {
 
   return (
     <Fragment>
-      <div className="container">
-        <h2 className="mt-3">Thriller</h2>
-        <div className="d-flex flex-row flex-nowrap overflow-auto">
-          {movies[0].map((movie) => (
-            <div
-              key={movie.id}
-              className="card card-block mx-2"
-              style={{ minWidth: "280px" }}
-            >
-              <MovieItem
+      {genreNames.map((genre, i) => (
+        <div className="container" key={genre}>
+          <h2 className="mt-3">{genre}</h2>
+          <div className="d-flex flex-row flex-nowrap overflow-auto">
+            {movies[i].map((movie) => (
+              <div
                 key={movie.id}
-                title={movie.title}
-                poster={movie.poster_path}
-                overview={movie.overview}
-              />
-            </div>
-          ))}
+                className="card card-block mx-2"
+                style={{ minWidth: "280px" }}
+              >
+                <MovieItem
+                  key={movie.id}
+                  id={movie.id}
+                  title={movie.title}
+                  poster={movie.poster_path}
+                  overview={movie.overview}
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="container">
-        <h2 className="mt-3">Drama</h2>
-        <div className="d-flex flex-row flex-nowrap overflow-auto">
-          {movies[1].map((movie) => (
-            <div
-              key={movie.id}
-              className="card card-block mx-2"
-              style={{ minWidth: "280px" }}
-            >
-              <MovieItem
-                key={movie.id}
-                title={movie.original_title}
-                poster={movie.poster_path}
-                overview={movie.overview}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="container">
-        <h2 className="mt-3">Action</h2>
-        <div className="d-flex flex-row flex-nowrap overflow-auto">
-          {movies[2].map((movie) => (
-            <div
-              key={movie.id}
-              className="card card-block mx-2"
-              style={{ minWidth: "280px" }}
-            >
-              <MovieItem
-                key={movie.id}
-                title={movie.original_title}
-                poster={movie.poster_path}
-                overview={movie.overview}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+      ))}
     </Fragment>
   );
 };

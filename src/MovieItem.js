@@ -1,14 +1,20 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { BsBookmarkStarFill, BsBookmarkStar } from "react-icons/bs";
 import classes from "./MovieItem.module.css";
 
 const MovieItem = (props) => {
   const BASE_IMG_URL = "https://image.tmdb.org/t/p/w500";
   const [isFavourite, setIsFavourite] = useState(false);
+  const history = useHistory();
 
   const addToFavouritesHandler = () => {
     setIsFavourite((prevState) => !prevState);
+  };
+
+  const showMovieDetailsHandler = () => {
+    history.push("/" + props.id);
   };
 
   return (
@@ -25,9 +31,12 @@ const MovieItem = (props) => {
 
       <div className="card-body">
         <div className="d-flex align-items-center justify-content-between">
-          <a href="#" className="card-link">
+          <button
+            onClick={showMovieDetailsHandler}
+            className="btn btn-secondary"
+          >
             Show details
-          </a>
+          </button>
 
           <button onClick={addToFavouritesHandler} className="btn btn primary">
             {isFavourite ? (

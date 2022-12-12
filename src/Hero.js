@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Fragment } from "react";
 import classes from "./Hero.module.css";
+import { Carousel } from "react-bootstrap";
 
 const Hero = () => {
   const fetchMoviesHandler = async () => {
