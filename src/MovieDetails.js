@@ -16,6 +16,8 @@ const MovieDetails = (props) => {
     );
     const data = await response.json();
     setMovieImages(data);
+    console.log(data);
+    console.log(data.backdrops[0].file_path);
   };
 
   const fetchMovieDetailsHandler = async () => {
@@ -36,32 +38,22 @@ const MovieDetails = (props) => {
   return (
     <Fragment>
       {movieImages && (
-        <div className="container" style={{ height: "50%" }}>
+        <div className="container">
           <Carousel>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src={`${BASE_IMG_URL}${movieImages.backdrops[0].file_path}`}
-                alt="First slide"
-              />
-            </Carousel.Item>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src={`${BASE_IMG_URL}${movieImages.backdrops[1].file_path}`}
-                alt="Second slide"
-              />
-            </Carousel.Item>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src={`${BASE_IMG_URL}${movieImages.backdrops[2].file_path}`}
-                alt="Third slide"
-              />
-            </Carousel.Item>
+            {movieImages.backdrops.map((backdrop, index) => (
+              <Carousel.Item key={index}>
+                <img
+                  className="d-block w-100"
+                  src={`${BASE_IMG_URL}${backdrop.file_path}`}
+                  //   src="https://s3-us-west-2.amazonaws.com/prd-rteditorial/wp-content/uploads/2018/03/13153742/RT_300EssentialMovies_700X250.jpg"
+                  alt="First slide"
+                />
+              </Carousel.Item>
+            ))}
           </Carousel>
         </div>
       )}
+
       {movieDetails && (
         <Fragment>
           <div className="container">

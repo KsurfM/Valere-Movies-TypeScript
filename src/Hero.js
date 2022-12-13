@@ -4,6 +4,7 @@ import classes from "./Hero.module.css";
 import { Carousel } from "react-bootstrap";
 
 const Hero = () => {
+  const movieImages = ["seks", "jebanje", "guznjava"];
   const fetchMoviesHandler = async () => {
     const response = await fetch(
       "https://api.themoviedb.org/3/search/multi?api_key=d76141fc516005c4b21c33a7c4f13e2f&language=en-US&query=Star%20Wars&page=1&include_adult=true"
