@@ -1,18 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Fragment } from "react";
+import { Link } from "react-router-dom";
 import classes from "./Hero.module.css";
-import { Carousel } from "react-bootstrap";
 
 const Hero = () => {
-  const movieImages = ["seks", "jebanje", "guznjava"];
-  const fetchMoviesHandler = async () => {
-    const response = await fetch(
-      "https://api.themoviedb.org/3/search/multi?api_key=d76141fc516005c4b21c33a7c4f13e2f&language=en-US&query=Star%20Wars&page=1&include_adult=true"
-    );
-    const data = await response.json();
-    console.log(data);
-  };
-
   return (
     <Fragment>
       <div className={classes.heroSection}>
@@ -20,9 +11,9 @@ const Hero = () => {
           <div className={classes.heroSection_box_left}>
             <h1>Pass the burden of choosing a movie to someone else!</h1>
             <p>Valere Movies has your back!</p>
-            <button onClick={fetchMoviesHandler} className="btn btn-primary">
-              Start your search
-            </button>
+            <Link to="/discover" className="btn btn-primary">
+              Discover Movies
+            </Link>
           </div>
           <div className={classes.heroSection_box_right}>
             <img

@@ -3,10 +3,19 @@ import { useEffect, useState, useCallback, Fragment } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const MovieList = () => {
-  const [movies, setMovies] = useState([[], [], []]);
+  const [movies, setMovies] = useState();
 
-  const genreList = [53, 28, 18];
-  const genreNames = ["Thriller", "Action", "Drama"];
+  const genreList = [53, 28, 18, 27, 99, 35, 37, 16];
+  const genreNames = [
+    "Thriller",
+    "Action",
+    "Drama",
+    "Horror",
+    "Documentary",
+    "Comedy",
+    "Western",
+    "Animation",
+  ];
   let movieArray;
 
   const fetchMoviesHandler = useCallback(async () => {
@@ -28,28 +37,32 @@ const MovieList = () => {
 
   return (
     <Fragment>
-      {genreNames.map((genre, i) => (
-        <div className="container" key={genre}>
-          <h2 className="mt-3">{genre}</h2>
-          <div className="d-flex flex-row flex-nowrap overflow-auto">
-            {movies[i].map((movie) => (
-              <div
-                key={movie.id}
-                className="card card-block mx-2"
-                style={{ minWidth: "280px" }}
-              >
-                <MovieItem
-                  key={movie.id}
-                  id={movie.id}
-                  title={movie.title}
-                  poster={movie.poster_path}
-                  overview={movie.overview}
-                />
+      {movies && (
+        <Fragment>
+          {genreNames.map((genre, i) => (
+            <div className="container" key={genre}>
+              <h2 className="mt-3">{genre}</h2>
+              <div className="d-flex flex-row flex-nowrap overflow-auto">
+                {movies[i].map((movie) => (
+                  <div
+                    key={movie.id}
+                    className="card card-block mx-2"
+                    style={{ minWidth: "280px" }}
+                  >
+                    <MovieItem
+                      key={movie.id}
+                      id={movie.id}
+                      title={movie.title}
+                      poster={movie.poster_path}
+                      overview={movie.overview}
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      ))}
+            </div>
+          ))}
+        </Fragment>
+      )}
     </Fragment>
   );
 };
