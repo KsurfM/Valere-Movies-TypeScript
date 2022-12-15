@@ -7,18 +7,8 @@ import classes from "./MovieItem.module.css";
 
 const MovieItem = (props) => {
   const BASE_IMG_URL = "https://image.tmdb.org/t/p/w500";
-  const [isFavourite, setIsFavourite] = useState(false);
   const history = useHistory();
   const appCtx = useContext(AppContext);
-
-  const addToFavouritesHandler = () => {
-    setIsFavourite((prevState) => !prevState);
-    if (!localStorage.getItem(props.id)) {
-      localStorage.setItem(`${props.id}`, true);
-    } else {
-      localStorage.removeItem(`${props.id}`);
-    }
-  };
 
   const showMovieDetailsHandler = () => {
     history.push("/" + props.id);
@@ -45,8 +35,11 @@ const MovieItem = (props) => {
             Show details
           </button>
 
-          <button onClick={addToFavouritesHandler} className="btn btn primary">
-            {localStorage.getItem(props.id) ? (
+          <button
+            onClick={appCtx.toggleFavourites.bind(null, props.id)}
+            className="btn btn primary"
+          >
+            {appCtx.favourites.includes(props.id) ? (
               <BsBookmarkStarFill size={28} />
             ) : (
               <BsBookmarkStar size={28} />

@@ -1,14 +1,37 @@
-import { Fragment } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
+import AppContext from "./store/app-context";
 
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import Image from "react-bootstrap/Image";
+
 import { BsBookmarkStarFill } from "react-icons/bs";
 
 function Navigation() {
+  const appCtx = useContext(AppContext);
+  const [favouriteMovies, setFavouriteMovies] = useState([]);
+  let favouritesArray;
+  const BASE_IMG_URL = "https://image.tmdb.org/t/p/w500";
+
+  const fetchFavouritesDetailsHandler = async () => {
+    favouritesArray = [];
+    for (const favourite of appCtx.favourites) {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${favourite}?api_key=d76141fc516005c4b21c33a7c4f13e2f&language=en-US`
+      );
+      const data = await response.json();
+      favouritesArray.push(data);
+      console.log(favouritesArray);
+    }
+    setFavouriteMovies(favouritesArray);
+  };
+
+  useEffect(() => {
+    fetchFavouritesDetailsHandler();
+  }, [appCtx.favourites]);
+
   return (
     <Fragment>
       <Navbar bg="light" expand="lg">
@@ -31,11 +54,6 @@ function Navigation() {
                 </button>
               </form>
 
-              {/* <Nav.Link href="#Favourites">
-                <strong>
-                  <BsBookmarkStarFill size={20} /> Favourites
-                </strong>
-              </Nav.Link> */}
               <NavDropdown
                 title={
                   <strong>
@@ -44,17 +62,22 @@ function Navigation() {
                 }
                 id="basic-nav-dropdown"
               >
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  Something
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
+                {favouriteMovies &&
+                  favouriteMovies.map((favouriteMovie) => (
+                    <NavDropdown.Item
+                      key={favouriteMovie.id}
+                      href={`${favouriteMovie.id}`}
+                    >
+                      <img
+                        className="thumbnail-image"
+                        style={{ width: "50px" }}
+                        src={`${BASE_IMG_URL}${favouriteMovie.poster_path}`}
+                        alt="movie thumbnail"
+                      />
+                      &nbsp;&nbsp;
+                      <strong>{favouriteMovie.title}</strong>
+                    </NavDropdown.Item>
+                  ))}
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>

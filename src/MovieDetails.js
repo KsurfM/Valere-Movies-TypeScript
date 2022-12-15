@@ -1,25 +1,17 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import AppContext from "./store/app-context";
 import { useParams } from "react-router-dom";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import { BsBookmarkStarFill, BsBookmarkStar } from "react-icons/bs";
 
 const MovieDetails = (props) => {
   const BASE_IMG_URL = "https://image.tmdb.org/t/p/original";
   const params = useParams();
-  const movieId = params.movieId;
+  const movieId = Number(params.movieId);
   const [movieImages, setMovieImages] = useState();
   const [movieDetailsAndTrailers, setMovieDetailsAndTrailers] = useState();
-  const [isFavourite, setIsFavourite] = useState(false);
-
-  const toggleFavouritesHandler = () => {
-    setIsFavourite((prevState) => !prevState);
-    if (!localStorage.getItem(movieId)) {
-      localStorage.setItem(`${movieId}`, true);
-    } else {
-      localStorage.removeItem(`${movieId}`);
-    }
-  };
+  const appCtx = useContext(AppContext);
 
   const fetchImagesHandler = async () => {
     const response = await fetch(
@@ -80,14 +72,17 @@ const MovieDetails = (props) => {
                   className="container d-flex justify-content-around border rounded p-2 mt-1 align-items-center"
                   style={{ height: "3rem" }}
                 >
-                  {localStorage.getItem(movieId) ? (
+                  {appCtx.favourites.includes(movieId) ? (
                     <h5>Remove from favourites</h5>
                   ) : (
                     <h5>Add to favourites</h5>
                   )}
 
-                  <button onClick={toggleFavouritesHandler} className="btn ">
-                    {localStorage.getItem(movieId) ? (
+                  <button
+                    onClick={appCtx.toggleFavourites.bind(null, movieId)}
+                    className="btn "
+                  >
+                    {appCtx.favourites.includes(movieId) ? (
                       <BsBookmarkStarFill size={28} />
                     ) : (
                       <BsBookmarkStar size={28} />

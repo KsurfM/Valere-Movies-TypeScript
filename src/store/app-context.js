@@ -1,23 +1,64 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
 const AppContext = React.createContext({
   toggleFavourites: () => {},
+  favourites: "",
 });
 
-export const AppContextProvier = (props) => {
-  const [isFavourite, setIsFavourite] = useState(false);
+export const AppContextProvider = (props) => {
+  const [favourites, setFavourites] = useState([]);
+  let idArray = [];
 
-  const toggleFavouritesHandler = () => {
-    setIsFavourite((prevState) => !prevState);
-    if (!localStorage.getItem(props.id)) {
-      localStorage.setItem(`${props.id}`, true);
+  const toggleFavouritesHandler = (movieId) => {
+    if (localStorage.getItem("favourites" === null)) {
+      localStorage.setItem("favourites", movieId);
+      setFavourites(movieId);
+    } else if (
+      localStorage
+        .getItem("favourites")
+        .split(",")
+        .map((id) => Number(id))
+        .includes(movieId)
+    ) {
+      idArray = localStorage
+        .getItem("favourites")
+        .split(",")
+        .map((id) => Number(id))
+        .filter((id) => id !== movieId)
+        .filter((id) => id !== 0);
+      setFavourites(idArray);
+      localStorage.setItem("favourites", idArray);
+      console.log(idArray);
     } else {
-      localStorage.removeItem(`${props.id}`);
+      idArray = localStorage
+        .getItem("favourites")
+        .split(",")
+        .map((id) => Number(id))
+        .filter((id) => id !== 0);
+      idArray.push(movieId);
+      setFavourites(idArray);
+      localStorage.setItem("favourites", idArray);
+      console.log(idArray);
     }
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("favourites") !== null) {
+      setFavourites(
+        localStorage
+          .getItem("favourites")
+          .split(",")
+          .map((id) => Number(id))
+      );
+      console.log("IMA");
+    } else if (localStorage.getItem("favourites") === null) {
+      localStorage.setItem("favourites", 0);
+    }
+  }, []);
+
   const contextValue = {
+    favourites: favourites,
     toggleFavourites: toggleFavouritesHandler,
   };
   return (
