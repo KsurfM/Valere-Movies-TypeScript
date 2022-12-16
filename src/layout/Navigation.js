@@ -13,9 +13,17 @@ import { BsBookmarkStarFill } from "react-icons/bs";
 function Navigation() {
   const [searchInput, setSearchInput] = useState();
   const [searchResults, setSearchResults] = useState();
+  const [isVisible, setIsVisible] = useState(false);
   const appCtx = useContext(AppContext);
   const [favouriteMovies, setFavouriteMovies] = useState([]);
   let favouritesArray;
+
+  const focusHandler = () => {
+    setIsVisible(true);
+  };
+  const blurHandler = () => {
+    setIsVisible(false);
+  };
 
   const searchHandler = async (event) => {
     setSearchInput(encodeURIComponent(event.target.value.trim()));
@@ -49,7 +57,7 @@ function Navigation() {
 
   return (
     <Fragment>
-      <Navbar bg="light" expand="lg">
+      <Navbar style={{ zIndex: "2" }} bg="light" expand="lg">
         <Container position="relative">
           <Navbar.Brand href="/">
             <h2>Valere Movies</h2>
@@ -61,13 +69,15 @@ function Navigation() {
               <form className="d-flex m-auto" role="search">
                 <input
                   onChange={searchHandler}
+                  onFocus={focusHandler}
+                  onBlur={blurHandler}
                   className="form-control "
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
                 />
                 <div style={{ width: "400px" }}></div>
-                {searchResults && searchInput !== "" && (
+                {searchResults && searchInput !== "" && isVisible && (
                   <div
                     className="position-absolute top-100  border rounded bg-light"
                     style={{

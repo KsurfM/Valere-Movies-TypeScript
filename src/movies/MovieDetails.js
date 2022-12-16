@@ -1,10 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import AppContext from "./store/app-context";
+import AppContext from "../store/app-context";
 import { useParams } from "react-router-dom";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import { BsBookmarkStarFill, BsBookmarkStar } from "react-icons/bs";
-import { BASE_IMG_URL, BASE_URL, API_KEY } from "./store/constants";
+import { BASE_IMG_URL, BASE_URL, API_KEY } from "../store/constants";
 
 const MovieDetails = (props) => {
   const params = useParams();

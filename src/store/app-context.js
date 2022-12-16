@@ -29,7 +29,6 @@ export const AppContextProvider = (props) => {
         .filter((id) => id !== 0);
       setFavourites(idArray);
       localStorage.setItem("favourites", idArray);
-      console.log(idArray);
     } else {
       idArray = localStorage
         .getItem("favourites")
@@ -39,7 +38,6 @@ export const AppContextProvider = (props) => {
       idArray.push(movieId);
       setFavourites(idArray);
       localStorage.setItem("favourites", idArray);
-      console.log(idArray);
     }
   };
 
@@ -51,7 +49,6 @@ export const AppContextProvider = (props) => {
           .split(",")
           .map((id) => Number(id))
       );
-      console.log("IMA");
     } else if (localStorage.getItem("favourites") === null) {
       localStorage.setItem("favourites", 0);
     }

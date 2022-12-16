@@ -1,4 +1,4 @@
-import Navigation from "./layout/Navigation";
+import Navigation from "./Navigation";
 import { Fragment } from "react";
 const Layout = (props) => {
   return (

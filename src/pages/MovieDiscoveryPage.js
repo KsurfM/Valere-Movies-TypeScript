@@ -1,4 +1,4 @@
-import MovieList from "../MovieList";
+import MovieList from "../movies/MovieList";
 
 const MovieDiscoveryPage = () => {
   return <MovieList />;

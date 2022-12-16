@@ -1,6 +1,6 @@
 import { Fragment } from "react";
-import Hero from "../Hero";
-import Steps from "../Steps";
+import Hero from "../home/Hero";
+import Steps from "../home/Steps";
 
 const Homepage = () => {
   return (

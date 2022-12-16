@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
-import classes from "./Hero.module.css";
+import classes from "../style/Hero.module.css";
 
 const Hero = () => {
   return (
