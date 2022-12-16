@@ -7,6 +7,7 @@ import MovieList from "./MovieList";
 import { Switch, Route } from "react-router-dom";
 import MovieDiscoveryPage from "./pages/MovieDiscoveryPage";
 import MovieDetailsPage from "./pages/MovieDetailsPage";
+import Homepage from "./pages/Homepage";
 
 function App() {
   const API_KEY = "d76141fc516005c4b21c33a7c4f13e2f";
@@ -15,7 +16,7 @@ function App() {
     <Layout>
       <Switch>
         <Route path="/" exact>
-          <Hero />
+          <Homepage />
         </Route>
         <Route path="/discover" exact>
           <MovieDiscoveryPage />

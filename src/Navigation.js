@@ -10,10 +10,26 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { BsBookmarkStarFill } from "react-icons/bs";
 
 function Navigation() {
+  const [searchInput, setSearchInput] = useState();
+  const [searchResults, setSearchResults] = useState();
   const appCtx = useContext(AppContext);
   const [favouriteMovies, setFavouriteMovies] = useState([]);
   let favouritesArray;
   const BASE_IMG_URL = "https://image.tmdb.org/t/p/w500";
+
+  const searchHandler = async (event) => {
+    setSearchInput(encodeURIComponent(event.target.value.trim()));
+
+    if (searchInput) {
+      {
+        const response = await fetch(
+          `https://api.themoviedb.org/3/search/movie?api_key=d76141fc516005c4b21c33a7c4f13e2f&language=en-US&query=${searchInput}&page=1&include_adult=false`
+        );
+        const data = await response.json();
+        setSearchResults(data);
+      }
+    }
+  };
 
   const fetchFavouritesDetailsHandler = async () => {
     favouritesArray = [];
@@ -23,7 +39,6 @@ function Navigation() {
       );
       const data = await response.json();
       favouritesArray.push(data);
-      console.log(favouritesArray);
     }
     setFavouriteMovies(favouritesArray);
   };
@@ -35,23 +50,50 @@ function Navigation() {
   return (
     <Fragment>
       <Navbar bg="light" expand="lg">
-        <Container>
+        <Container position="relative">
           <Navbar.Brand href="/">
             <h2>Valere Movies</h2>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
-              <form className="d-flex " role="search">
+            <Nav className="m-auto">
+              <div style={{ width: "150px" }}></div>
+              <form className="d-flex m-auto" role="search">
                 <input
-                  className="form-control me-2"
+                  onChange={searchHandler}
+                  className="form-control "
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
                 />
-                <button className="btn btn-primary" type="submit">
+                <div style={{ width: "400px" }}></div>
+                {searchResults && searchInput !== "" && (
+                  <div
+                    className="position-absolute top-100  border rounded bg-light"
+                    style={{
+                      width: "400px",
+                      maxHeight: "225px",
+                      overflow: "scroll",
+                    }}
+                  >
+                    {searchResults.results?.map((result) => (
+                      <div key={result.id}>
+                        <img
+                          className="thumbnail-image"
+                          style={{ width: "50px" }}
+                          src={`${BASE_IMG_URL}${result.poster_path}`}
+                          alt="movie thumbnail"
+                        />
+                        &nbsp;&nbsp;
+                        {result.title}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* <button className="btn btn-primary" type="submit">
                   Search
-                </button>
+                </button> */}
               </form>
 
               <NavDropdown

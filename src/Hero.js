@@ -9,8 +9,11 @@ const Hero = () => {
       <div className={classes.heroSection}>
         <div className={classes.heroSection_box}>
           <div className={classes.heroSection_box_left}>
-            <h1>Pass the burden of choosing a movie to someone else!</h1>
-            <p>Valere Movies has your back!</p>
+            <h1>
+              Don't waste time choosing the perfect movie. Let our state of the
+              art AI engine do the job for you.
+            </h1>
+            <p>Get a 14-day free trial.</p>
             <Link to="/discover" className="btn btn-primary">
               Discover Movies
             </Link>
