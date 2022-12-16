@@ -4,9 +4,9 @@ import AppContext from "./store/app-context";
 import { useHistory } from "react-router-dom";
 import { BsBookmarkStarFill, BsBookmarkStar } from "react-icons/bs";
 import classes from "./MovieItem.module.css";
+import { BASE_IMG_URL } from "./store/constants";
 
 const MovieItem = (props) => {
-  const BASE_IMG_URL = "https://image.tmdb.org/t/p/w500";
   const history = useHistory();
   const appCtx = useContext(AppContext);
 

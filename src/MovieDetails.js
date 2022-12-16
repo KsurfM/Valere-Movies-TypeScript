@@ -4,9 +4,9 @@ import { useParams } from "react-router-dom";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import { BsBookmarkStarFill, BsBookmarkStar } from "react-icons/bs";
+import { BASE_IMG_URL, BASE_URL, API_KEY } from "./store/constants";
 
 const MovieDetails = (props) => {
-  const BASE_IMG_URL = "https://image.tmdb.org/t/p/original";
   const params = useParams();
   const movieId = Number(params.movieId);
   const [movieImages, setMovieImages] = useState();
@@ -15,7 +15,7 @@ const MovieDetails = (props) => {
 
   const fetchImagesHandler = async () => {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}/images?api_key=d76141fc516005c4b21c33a7c4f13e2f&language=en-US&include_image_language=en,null `
+      `${BASE_URL}/movie/${movieId}/images?api_key=${API_KEY}&language=en-US&include_image_language=en,null `
     );
     const data = await response.json();
     setMovieImages(data);
@@ -23,7 +23,7 @@ const MovieDetails = (props) => {
 
   const fetchMovieDetailsAndTrailersHandler = async () => {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}?api_key=d76141fc516005c4b21c33a7c4f13e2f&language=en-US&append_to_response=videos`
+      `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&language=en-US&append_to_response=videos`
     );
     const data = await response.json();
     setMovieDetailsAndTrailers(data);

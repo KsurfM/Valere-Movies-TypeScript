@@ -1,11 +1,12 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AppContext from "./store/app-context";
-
+import AppContext from "../store/app-context";
+import { Link } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { BASE_IMG_URL, BASE_URL, API_KEY } from "../store/constants";
 
 import { BsBookmarkStarFill } from "react-icons/bs";
 
@@ -15,7 +16,6 @@ function Navigation() {
   const appCtx = useContext(AppContext);
   const [favouriteMovies, setFavouriteMovies] = useState([]);
   let favouritesArray;
-  const BASE_IMG_URL = "https://image.tmdb.org/t/p/w500";
 
   const searchHandler = async (event) => {
     setSearchInput(encodeURIComponent(event.target.value.trim()));
@@ -23,7 +23,7 @@ function Navigation() {
     if (searchInput) {
       {
         const response = await fetch(
-          `https://api.themoviedb.org/3/search/movie?api_key=d76141fc516005c4b21c33a7c4f13e2f&language=en-US&query=${searchInput}&page=1&include_adult=false`
+          `${BASE_URL}/search/movie?api_key=${API_KEY}&language=en-US&query=${searchInput}&page=1&include_adult=false`
         );
         const data = await response.json();
         setSearchResults(data);
@@ -35,7 +35,7 @@ function Navigation() {
     favouritesArray = [];
     for (const favourite of appCtx.favourites) {
       const response = await fetch(
-        `https://api.themoviedb.org/3/movie/${favourite}?api_key=d76141fc516005c4b21c33a7c4f13e2f&language=en-US`
+        `${BASE_URL}/movie/${favourite}?api_key=${API_KEY}&language=en-US`
       );
       const data = await response.json();
       favouritesArray.push(data);
@@ -71,21 +71,26 @@ function Navigation() {
                   <div
                     className="position-absolute top-100  border rounded bg-light"
                     style={{
-                      width: "400px",
+                      width: "600px",
                       maxHeight: "225px",
                       overflow: "scroll",
                     }}
                   >
                     {searchResults.results?.map((result) => (
-                      <div key={result.id}>
+                      <div className="border rounded" key={result.id}>
                         <img
-                          className="thumbnail-image"
+                          className="thumbnail-image "
                           style={{ width: "50px" }}
                           src={`${BASE_IMG_URL}${result.poster_path}`}
                           alt="movie thumbnail"
                         />
                         &nbsp;&nbsp;
-                        {result.title}
+                        <Link
+                          style={{ textDecoration: "none", color: "black" }}
+                          to={`/${result.id}`}
+                        >
+                          <strong>{result.title}</strong>
+                        </Link>
                       </div>
                     ))}
                   </div>
