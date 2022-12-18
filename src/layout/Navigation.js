@@ -143,7 +143,7 @@ function Navigation() {
                         className="thumbnail-image"
                         style={{ width: "50px" }}
                         src={`${BASE_IMG_URL}${favouriteMovie.poster_path}`}
-                        alt="movie thumbnail"
+                        // alt="movie thumbnail"
                       />
                       &nbsp;&nbsp;
                       <strong>{favouriteMovie.title}</strong>

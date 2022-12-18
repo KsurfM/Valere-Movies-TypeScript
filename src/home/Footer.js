@@ -13,8 +13,6 @@ const Footer = () => {
             <FaCcVisa size={40} />
             <FaCcMastercard size={40} />
           </div>
-          {/* <div className="col d-flex justify-content-center"></div>
-          <div className="col d-flex justify-content-center"></div> */}
         </div>
       </div>
     </Fragment>

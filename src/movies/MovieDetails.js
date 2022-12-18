@@ -93,7 +93,6 @@ const MovieDetails = (props) => {
                   className="container d-flex flex justify-content-left border rounded p-2 mt-1 align-items-center text-light bg-secondary"
                   style={{ height: "2.5rem" }}
                 >
-                  {/* <h5>Runtime:&nbsp; </h5> */}
                   <h6>{`${movieDetailsAndTrailers.runtime} minutes`}</h6>
                 </div>
                 <div
