@@ -2,7 +2,7 @@ import { Fragment, useContext, useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppContext from "../store/app-context";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -16,6 +16,7 @@ function Navigation() {
   const [isVisible, setIsVisible] = useState(false);
   const appCtx = useContext(AppContext);
   const [favouriteMovies, setFavouriteMovies] = useState([]);
+  const history = useHistory();
   let favouritesArray;
 
   const focusHandler = () => {
@@ -23,6 +24,10 @@ function Navigation() {
   };
   const blurHandler = () => {
     setIsVisible(false);
+  };
+
+  const redirectToDetailsPageHandler = (id) => {
+    history.push(`/${id}`);
   };
 
   const searchHandler = async (event) => {
@@ -57,7 +62,7 @@ function Navigation() {
 
   return (
     <Fragment>
-      <Navbar style={{ zIndex: "2" }} bg="light" expand="lg">
+      <Navbar sticky="top" style={{ zIndex: "2" }} bg="light" expand="lg">
         <Container position="relative">
           <Navbar.Brand href="/">
             <h2>Valere Movies</h2>
@@ -70,7 +75,7 @@ function Navigation() {
                 <input
                   onChange={searchHandler}
                   onFocus={focusHandler}
-                  onBlur={blurHandler}
+                  // onBlur={blurHandler}
                   className="form-control "
                   type="search"
                   placeholder="Search"
@@ -95,12 +100,21 @@ function Navigation() {
                           alt="movie thumbnail"
                         />
                         &nbsp;&nbsp;
-                        <Link
-                          style={{ textDecoration: "none", color: "black" }}
-                          to={`/${result.id}`}
+                        <button
+                          className="btn btn-link text-dark text-decoration-none"
+                          // style={{
+                          //   textDecoration: "none",
+                          //   color: "black",
+                          //   border: "none",
+                          //   backgroundColor: "none",
+                          // }}
+                          onClick={redirectToDetailsPageHandler.bind(
+                            null,
+                            result.id
+                          )}
                         >
                           <strong>{result.title}</strong>
-                        </Link>
+                        </button>
                       </div>
                     ))}
                   </div>

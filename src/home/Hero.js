@@ -15,7 +15,7 @@ const Hero = () => {
             </h1>
             <p>Get a 14-day free trial.</p>
             <Link to="/discover" className="btn btn-primary">
-              Discover Movies
+              <strong>Discover Movies</strong>
             </Link>
           </div>
           <div className={classes.heroSection_box_right}>
