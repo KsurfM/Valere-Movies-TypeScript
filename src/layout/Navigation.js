@@ -31,7 +31,6 @@ function Navigation() {
     setIsVisible(true);
   };
   const blurHandler = (e) => {
-    e.preventDefault();
     setIsVisible(false);
   };
 

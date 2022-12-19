@@ -27,7 +27,7 @@ const MovieList = () => {
       `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=2&release_date.gte=2022-11-01&with_watch_monetization_types=flatrate`
     );
     const data = await response.json();
-    console.log(data);
+
     movieArray.push(data.results);
 
     for (const genre of genreList) {
@@ -35,7 +35,7 @@ const MovieList = () => {
         `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=${genre}&with_watch_monetization_types=flatrate`
       );
       const data = await response.json();
-      console.log(movieArray);
+
       movieArray.push(data.results);
     }
     setMovies(movieArray);
