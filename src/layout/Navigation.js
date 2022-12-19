@@ -1,8 +1,15 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppContext from "../store/app-context";
-import { Link, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -16,35 +23,34 @@ function Navigation() {
   const [isVisible, setIsVisible] = useState(false);
   const appCtx = useContext(AppContext);
   const [favouriteMovies, setFavouriteMovies] = useState([]);
-  const history = useHistory();
+  const navigate = useNavigate();
+  const searchBarRef = useRef(null);
   let favouritesArray;
 
   const focusHandler = () => {
     setIsVisible(true);
   };
-  const blurHandler = () => {
-    setIsVisible(false);
-  };
+  // const blurHandler = () => {
+  //   setIsVisible(false);
+  // };
 
   const redirectToDetailsPageHandler = (id) => {
-    history.push(`/${id}`);
+    navigate(`/${id}?`);
   };
 
   const searchHandler = async (event) => {
     setSearchInput(encodeURIComponent(event.target.value.trim()));
 
     if (searchInput) {
-      {
-        const response = await fetch(
-          `${BASE_URL}/search/movie?api_key=${API_KEY}&language=en-US&query=${searchInput}&page=1&include_adult=false`
-        );
-        const data = await response.json();
-        setSearchResults(data);
-      }
+      const response = await fetch(
+        `${BASE_URL}/search/movie?api_key=${API_KEY}&language=en-US&query=${searchInput}&page=1&include_adult=false`
+      );
+      const data = await response.json();
+      setSearchResults(data);
     }
   };
 
-  const fetchFavouritesDetailsHandler = async () => {
+  const fetchFavouritesDetailsHandler = useCallback(async () => {
     favouritesArray = [];
     for (const favourite of appCtx.favourites) {
       const response = await fetch(
@@ -54,11 +60,11 @@ function Navigation() {
       favouritesArray.push(data);
     }
     setFavouriteMovies(favouritesArray);
-  };
+  }, []);
 
   useEffect(() => {
     fetchFavouritesDetailsHandler();
-  }, [appCtx.favourites]);
+  }, [appCtx.favourites, fetchFavouritesDetailsHandler]);
 
   return (
     <Fragment>
@@ -81,7 +87,7 @@ function Navigation() {
                   placeholder="Search"
                   aria-label="Search"
                 />
-                <div style={{ width: "400px" }}></div>
+                <div ref={searchBarRef} style={{ width: "400px" }}></div>
                 {searchResults && searchInput !== "" && isVisible && (
                   <div
                     className="position-absolute top-100  border rounded bg-light"
@@ -102,12 +108,6 @@ function Navigation() {
                         &nbsp;&nbsp;
                         <button
                           className="btn btn-link text-dark text-decoration-none"
-                          // style={{
-                          //   textDecoration: "none",
-                          //   color: "black",
-                          //   border: "none",
-                          //   backgroundColor: "none",
-                          // }}
                           onClick={redirectToDetailsPageHandler.bind(
                             null,
                             result.id
@@ -143,7 +143,7 @@ function Navigation() {
                         className="thumbnail-image"
                         style={{ width: "50px" }}
                         src={`${BASE_IMG_URL}${favouriteMovie.poster_path}`}
-                        // alt="movie thumbnail"
+                        alt="movie thumbnail"
                       />
                       &nbsp;&nbsp;
                       <strong>{favouriteMovie.title}</strong>

@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppContext from "../store/app-context";
 import { useParams } from "react-router-dom";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useCallback, useContext, useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import { BsBookmarkStarFill, BsBookmarkStar } from "react-icons/bs";
 import { BASE_IMG_URL, BASE_URL, API_KEY } from "../store/constants";
@@ -13,27 +13,26 @@ const MovieDetails = (props) => {
   const [movieDetailsAndTrailers, setMovieDetailsAndTrailers] = useState();
   const appCtx = useContext(AppContext);
 
-  const fetchImagesHandler = async () => {
+  const fetchImagesHandler = useCallback(async () => {
     const response = await fetch(
       `${BASE_URL}/movie/${movieId}/images?api_key=${API_KEY}&language=en-US&include_image_language=en,null `
     );
     const data = await response.json();
     setMovieImages(data);
-  };
+  }, [movieId]);
 
-  const fetchMovieDetailsAndTrailersHandler = async () => {
+  const fetchMovieDetailsAndTrailersHandler = useCallback(async () => {
     const response = await fetch(
       `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&language=en-US&append_to_response=videos`
     );
     const data = await response.json();
     setMovieDetailsAndTrailers(data);
-    console.log(data);
-  };
+  }, [movieId]);
 
   useEffect(() => {
     fetchImagesHandler();
     fetchMovieDetailsAndTrailersHandler();
-  }, []);
+  }, [fetchImagesHandler, fetchMovieDetailsAndTrailersHandler]);
 
   return (
     <Fragment>

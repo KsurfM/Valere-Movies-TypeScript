@@ -1,17 +1,17 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import AppContext from "../store/app-context";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BsBookmarkStarFill, BsBookmarkStar } from "react-icons/bs";
 import classes from "../style/MovieItem.module.css";
 import { BASE_IMG_URL } from "../store/constants";
 
 const MovieItem = (props) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const appCtx = useContext(AppContext);
 
   const showMovieDetailsHandler = () => {
-    history.push("/" + props.id);
+    navigate("/" + props.id);
   };
 
   return (

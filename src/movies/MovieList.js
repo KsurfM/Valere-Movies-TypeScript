@@ -39,7 +39,7 @@ const MovieList = () => {
       movieArray.push(data.results);
     }
     setMovies(movieArray);
-  }, []);
+  }, [movieArray]);
 
   useEffect(() => {
     fetchMoviesHandler();
