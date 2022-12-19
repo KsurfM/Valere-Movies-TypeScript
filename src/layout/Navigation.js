@@ -30,9 +30,10 @@ function Navigation() {
   const focusHandler = () => {
     setIsVisible(true);
   };
-  // const blurHandler = () => {
-  //   setIsVisible(false);
-  // };
+  const blurHandler = (e) => {
+    e.preventDefault();
+    setIsVisible(false);
+  };
 
   const redirectToDetailsPageHandler = (id) => {
     navigate(`/${id}?`);
@@ -81,7 +82,7 @@ function Navigation() {
                 <input
                   onChange={searchHandler}
                   onFocus={focusHandler}
-                  // onBlur={blurHandler}
+                  onBlur={blurHandler}
                   className="form-control "
                   type="search"
                   placeholder="Search"
@@ -108,7 +109,7 @@ function Navigation() {
                         &nbsp;&nbsp;
                         <button
                           className="btn btn-link text-dark text-decoration-none"
-                          onClick={redirectToDetailsPageHandler.bind(
+                          onMouseDown={redirectToDetailsPageHandler.bind(
                             null,
                             result.id
                           )}
