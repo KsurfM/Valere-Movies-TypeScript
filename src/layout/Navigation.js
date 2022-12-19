@@ -60,7 +60,7 @@ function Navigation() {
       favouritesArray.push(data);
     }
     setFavouriteMovies(favouritesArray);
-  }, [favouritesArray]);
+  }, [favouritesArray, appCtx.favourites]);
 
   useEffect(() => {
     fetchFavouritesDetailsHandler();
