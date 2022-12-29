@@ -1,8 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
 import { Fragment } from "react";
 import { FaApplePay, FaCcVisa, FaCcMastercard, FaPaypal } from "react-icons/fa";
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
     <Fragment>
       <div className="container">

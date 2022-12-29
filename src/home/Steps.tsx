@@ -3,7 +3,7 @@ import { TbNumber1, TbNumber2, TbNumber3 } from "react-icons/tb";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 
-const Steps = () => {
+const Steps: React.FC = () => {
   return (
     <Fragment>
       <div className="row border-top border-dark  pt-3 pb-3 d-flex align-items-center">

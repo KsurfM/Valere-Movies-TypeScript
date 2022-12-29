@@ -17,28 +17,83 @@ import { BASE_IMG_URL, BASE_URL, API_KEY } from "../store/constants";
 
 import { BsBookmarkStarFill } from "react-icons/bs";
 
-function Navigation() {
-  const [searchInput, setSearchInput] = useState();
-  const [searchResults, setSearchResults] = useState();
+interface searchResultsInterface {
+  page: number;
+  results?: {
+    adult: boolean;
+    backdrop_path?: string;
+    genre_ids?: number[];
+    id: number;
+    original_language: string;
+    overview: string;
+    popularity: number;
+    poster_path?: string;
+    release_date: string;
+    title: string;
+    video: boolean;
+    vote_average: number;
+    vote_count: number;
+  }[];
+}
+interface Favourites {
+  adult: false;
+  backdrop_path: string;
+  belongs_to_collection?: any;
+  budget: number;
+  genres: { id: number; name: string }[];
+  homepage: string;
+  id: number;
+  imdb_id: string;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path?: string;
+  production_companies: {
+    id: number;
+    logo_path: string;
+    name: string;
+    origin_country: string;
+  }[];
+  production_countries: { iso_3166_1: string; name: string }[];
+  release_date: string;
+  revenue: number;
+  runtime: number;
+  spoken_languages: {
+    english_name: string;
+    iso_639_1: string;
+    name: string;
+  }[];
+  status: string;
+  tagline: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}
+
+const Navigation: React.FC = () => {
+  const [searchInput, setSearchInput] = useState<string>();
+  const [searchResults, setSearchResults] = useState<searchResultsInterface>();
   const [isVisible, setIsVisible] = useState(false);
   const appCtx = useContext(AppContext);
-  const [favouriteMovies, setFavouriteMovies] = useState([]);
+  const [favouriteMovies, setFavouriteMovies] = useState<Favourites[]>([]);
   const navigate = useNavigate();
   const searchBarRef = useRef(null);
-  let favouritesArray;
+  let favouritesArray: Favourites[] = [];
 
   const focusHandler = () => {
     setIsVisible(true);
   };
-  const blurHandler = (e) => {
+  const blurHandler = () => {
     setIsVisible(false);
   };
 
-  const redirectToDetailsPageHandler = (id) => {
+  const redirectToDetailsPageHandler = (id: number) => {
     navigate(`/${id}?`);
   };
 
-  const searchHandler = async (event) => {
+  const searchHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(encodeURIComponent(event.target.value.trim()));
 
     if (searchInput) {
@@ -46,21 +101,24 @@ function Navigation() {
         `${BASE_URL}/search/movie?api_key=${API_KEY}&language=en-US&query=${searchInput}&page=1&include_adult=false`
       );
       const data = await response.json();
+
       setSearchResults(data);
     }
   };
 
   const fetchFavouritesDetailsHandler = useCallback(async () => {
     favouritesArray = [];
-    for (const favourite of appCtx.favourites) {
-      const response = await fetch(
-        `${BASE_URL}/movie/${favourite}?api_key=${API_KEY}&language=en-US`
-      );
-      const data = await response.json();
-      favouritesArray.push(data);
+    if (appCtx.favourites !== null) {
+      for (const favourite of appCtx.favourites) {
+        const response = await fetch(
+          `${BASE_URL}/movie/${favourite}?api_key=${API_KEY}&language=en-US`
+        );
+        const data = await response.json();
+        favouritesArray.push(data);
+      }
     }
     setFavouriteMovies(favouritesArray);
-  }, [favouritesArray, appCtx.favourites]);
+  }, [appCtx.favourites]);
 
   useEffect(() => {
     fetchFavouritesDetailsHandler();
@@ -69,7 +127,7 @@ function Navigation() {
   return (
     <Fragment>
       <Navbar sticky="top" style={{ zIndex: "2" }} bg="light" expand="lg">
-        <Container position="relative">
+        <Container>
           <Navbar.Brand href="/">
             <h2>Valere Movies</h2>
           </Navbar.Brand>
@@ -133,6 +191,12 @@ function Navigation() {
                 }
                 id="basic-nav-dropdown"
               >
+                {!favouriteMovies ||
+                  (favouriteMovies.length === 0 && (
+                    <div className="px-3">
+                      Favorite a movie to see something here!
+                    </div>
+                  ))}
                 {favouriteMovies &&
                   favouriteMovies.map((favouriteMovie) => (
                     <NavDropdown.Item
@@ -156,6 +220,6 @@ function Navigation() {
       </Navbar>
     </Fragment>
   );
-}
+};
 
 export default Navigation;

@@ -1,10 +1,26 @@
 import MovieItem from "./MovieItem";
+import React from "react";
 import { useEffect, useState, useCallback, Fragment } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BASE_URL, API_KEY } from "../store/constants";
 
-const MovieList = () => {
-  const [movies, setMovies] = useState();
+interface MovieResults {
+  adult: boolean;
+  backdrop_path?: string;
+  genre_ids?: number[];
+  id: number;
+  original_language: string;
+  overview: string;
+  popularity: number;
+  poster_path?: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}
+const MovieList: React.FC = () => {
+  const [movies, setMovies] = useState<MovieResults[][]>();
 
   const genreList = [53, 28, 18, 27, 99, 35, 37, 16];
   const genreNames = [
@@ -38,6 +54,7 @@ const MovieList = () => {
 
       movieArray.push(data.results);
     }
+
     setMovies(movieArray);
   }, [movieArray]);
 

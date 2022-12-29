@@ -1,38 +1,133 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppContext from "../store/app-context";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Fragment, useCallback, useContext, useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import { BsBookmarkStarFill, BsBookmarkStar } from "react-icons/bs";
 import { BASE_IMG_URL, BASE_URL, API_KEY } from "../store/constants";
 
-const MovieDetails = (props) => {
+interface movieImages {
+  backdrops: {
+    aspect_ratio: number;
+    file_path: string;
+    height: number;
+    iso_639_1: any;
+    vote_average: number;
+    vote_count: number;
+    width: number;
+  }[];
+  logos: {
+    aspect_ratio: number;
+    file_path: string;
+    height: number;
+    iso_639_1: any;
+    vote_average: number;
+    vote_count: number;
+    width: number;
+  }[];
+  posters: {
+    aspect_ratio: number;
+    file_path: string;
+    height: number;
+    iso_639_1: any;
+    vote_average: number;
+    vote_count: number;
+    width: number;
+  }[];
+}
+
+interface movieDetailsAndTrailers {
+  adult: boolean;
+  backdrop_path: string;
+  belongs_to_collection: any;
+  budget: number;
+  genres: {
+    id: number;
+    name: string;
+  }[];
+  homepage: string;
+  id: number;
+  imdb_id: string;
+  original_language: string;
+  overview: string;
+  popularity: number;
+  poster_path: number;
+  production_companies: {
+    id: number;
+    logo_path: any;
+    name: string;
+    origin_country: string;
+  }[];
+  production_countries: {
+    iso_3166_1: string;
+    name: string;
+  }[];
+  release_date: string;
+  revenue: number;
+  runtime: number;
+  spoken_languages: {
+    english_name: string;
+    iso_639_1: string;
+    name: string;
+  }[];
+  status: string;
+  tagline: string;
+  title: string;
+  video: boolean;
+  videos: {
+    results: {
+      iso_639_1: string;
+      iso_3166_1: string;
+      key: string;
+      name: string;
+      official: boolean;
+      published_at: string;
+      site: string;
+      size: number;
+      type: string;
+    }[];
+    vote_average: number;
+    vote_count: number;
+  };
+  vote_average: number;
+  vote_count: number;
+}
+
+const MovieDetails: React.FC = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const movieId = Number(params.movieId);
-  const [movieImages, setMovieImages] = useState();
-  const [movieDetailsAndTrailers, setMovieDetailsAndTrailers] = useState();
+  const [movieImages, setMovieImages] = useState<movieImages>();
+  const [movieDetailsAndTrailers, setMovieDetailsAndTrailers] =
+    useState<movieDetailsAndTrailers>();
   const appCtx = useContext(AppContext);
 
   const fetchImagesHandler = useCallback(async () => {
     const response = await fetch(
       `${BASE_URL}/movie/${movieId}/images?api_key=${API_KEY}&language=en-US&include_image_language=en,null `
     );
+
+    if (!response.ok) {
+      navigate("404");
+    }
     const data = await response.json();
+
     setMovieImages(data);
-  }, [movieId]);
+  }, [movieId, navigate]);
 
   const fetchMovieDetailsAndTrailersHandler = useCallback(async () => {
     const response = await fetch(
       `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&language=en-US&append_to_response=videos`
     );
     const data = await response.json();
+
     setMovieDetailsAndTrailers(data);
   }, [movieId]);
 
   useEffect(() => {
     fetchImagesHandler();
     fetchMovieDetailsAndTrailersHandler();
-  }, [fetchImagesHandler, fetchMovieDetailsAndTrailersHandler]);
+  }, [fetchImagesHandler, fetchMovieDetailsAndTrailersHandler, movieId]);
 
   return (
     <Fragment>

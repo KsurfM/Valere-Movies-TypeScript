@@ -1,6 +1,6 @@
 import MovieList from "../movies/MovieList";
 
-const MovieDiscoveryPage = () => {
+const MovieDiscoveryPage: React.FC = () => {
   return <MovieList />;
 };
 

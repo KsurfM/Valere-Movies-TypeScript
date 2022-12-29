@@ -6,7 +6,13 @@ import { BsBookmarkStarFill, BsBookmarkStar } from "react-icons/bs";
 import classes from "../style/MovieItem.module.css";
 import { BASE_IMG_URL } from "../store/constants";
 
-const MovieItem = (props) => {
+const MovieItem: React.FC<{
+  id: number;
+  key: number;
+  title: string;
+  poster?: string;
+  overview: string;
+}> = (props) => {
   const navigate = useNavigate();
   const appCtx = useContext(AppContext);
 

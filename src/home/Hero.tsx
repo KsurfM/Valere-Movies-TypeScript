@@ -1,9 +1,10 @@
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import classes from "../style/Hero.module.css";
 
-const Hero = () => {
+const Hero: React.FC = () => {
   return (
     <Fragment>
       <div className={classes.heroSection}>
